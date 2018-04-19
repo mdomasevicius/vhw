@@ -1,0 +1,33 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+sourceSets.main.java.srcDirs = []
+sourceSets.main.groovy.srcDirs = ['src/main/java', 'src/main/groovy']
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.15'
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+}
+
+group 'lt.vinted.homework'
+version '1.0-snapshot'
+
+idea {
+    project {
+        jdkName = 1.8
+        languageLevel = 1.8
+        vcs = 'Git'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.7'
+}
