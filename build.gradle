@@ -1,3 +1,6 @@
+group 'lt.vinted.homework'
+version '1.0-snapshot'
+
 apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: 'groovy'
@@ -15,10 +18,8 @@ repositories {
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.15'
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+    testCompile 'cglib:cglib-nodep:3.2.6'
 }
-
-group 'lt.vinted.homework'
-version '1.0-snapshot'
 
 idea {
     project {
