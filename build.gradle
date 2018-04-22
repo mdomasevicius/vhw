@@ -1,9 +1,13 @@
+plugins {
+    id 'idea'
+    id 'java'
+    id 'groovy'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '2.0.3'
+}
+
 group 'lt.vinted.homework'
 version '1.0-snapshot'
-
-apply plugin: 'idea'
-apply plugin: 'java'
-apply plugin: 'groovy'
 
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDirs = ['src/main/java', 'src/main/groovy']
@@ -28,6 +32,24 @@ idea {
         vcs = 'Git'
     }
 }
+
+def distName = 'discoutns'
+shadowJar {
+    baseName = distName
+    classifier = null
+    version = null
+    mainClassName = 'lt.vinted.homework.App'
+}
+
+task copyBin {
+    copy {
+        from "build/libs/${distName}.jar"
+        into '/'
+    }
+}
+
+copyBin.mustRunAfter shadowJar
+
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.7'
