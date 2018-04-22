@@ -15,6 +15,8 @@ class Providers {
     private final static String PROVIDER_RESOURCE_NAME = 'providers.csv'
     private final List<Provider> providers = []
 
+    // ideally I would pull data from a data-source
+    // i will emulate this using `providers.csv` for simplicity
     Providers() {
        try {
            def url = this.class
@@ -79,7 +81,7 @@ class Providers {
         }
 
         // these are for convenience only to avoid mistyping, some of them are not even used but I felt like covering
-        // basics
+        // all the bases here
         BigDecimal deliveryPriceS() {
             return prices.S
         }
