@@ -9,6 +9,7 @@ import static java.math.BigDecimal.TEN
 import static java.math.RoundingMode.HALF_UP
 import static java.util.Objects.requireNonNull
 
+@SuppressWarnings(['VariableName']) // TODO fix this
 @CompileStatic
 class Discounts {
 
