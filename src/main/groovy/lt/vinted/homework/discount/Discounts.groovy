@@ -22,7 +22,7 @@ class Discounts {
         this.providers = new Providers()
         this.rules = [
             new EveryThirdLPLargeDiscount(providers) as DiscountRule,
-            new MatchLowestSmallShipmentPrice(providers) as DiscountRule
+            new MatchLowestSmallShipmentPrice(providers) as DiscountRule,
         ]
     }
 
@@ -32,7 +32,7 @@ class Discounts {
         requireNonNull(order.providerName, 'order.providerName can not be null')
         requireNonNull(order.size, 'order.size can not be null')
 
-        final accumulatedDiscount = rules.collect { it.apply(order) }.sum() as BigDecimal
+        final accumulatedDiscount = rules*.apply(order).sum() as BigDecimal
         final deliveryPrice = providers.findDeliveryPrice(order.providerName, order.size)
         final matchedDiscount = matchDeliveryPriceWhenDiscountExceeded(deliveryPrice, accumulatedDiscount)
 
@@ -45,18 +45,16 @@ class Discounts {
 
     private BigDecimal calculateAvailableDiscount(LocalDate orderDate, final BigDecimal calculatedDiscount) {
         def yearMonth = new DateKey(orderDate)
-        if (!monthDiscountLimits[yearMonth]) {
-            monthDiscountLimits[yearMonth] = MONTHLY_DISCOUNT_CAP
-        }
+        monthDiscountLimits[yearMonth] = monthDiscountLimits[yearMonth] ?: MONTHLY_DISCOUNT_CAP
 
         if (monthDiscountLimits[yearMonth] < calculatedDiscount) {
             def availableDiscount = monthDiscountLimits[yearMonth]
             monthDiscountLimits[yearMonth] = BigDecimal.ZERO
             return availableDiscount
-        } else {
-            monthDiscountLimits[yearMonth] = monthDiscountLimits[yearMonth] - calculatedDiscount
-            return calculatedDiscount
         }
+
+        monthDiscountLimits[yearMonth] = monthDiscountLimits[yearMonth] - calculatedDiscount
+        return calculatedDiscount
     }
 
     private static BigDecimal matchDeliveryPriceWhenDiscountExceeded(BigDecimal deliveryPrice, BigDecimal totalDiscount) {

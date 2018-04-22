@@ -20,7 +20,7 @@ class MatchLowestSmallShipmentPriceSpec extends Specification {
         given:
             providersMock.fetchProviders() >> [
                 new Provider('A', 1.0, 2.0, 3.0),
-                new Provider('B', 2.0, 4.0, 6.0)
+                new Provider('B', 2.0, 4.0, 6.0),
             ]
             providersMock.findDeliveryPrice('A', 'S') >> 1.0
             providersMock.findDeliveryPrice('B', 'S') >> 2.0
@@ -34,7 +34,7 @@ class MatchLowestSmallShipmentPriceSpec extends Specification {
         given:
             providersMock.fetchProviders() >> [
                 new Provider('A', 1.0, 2.0, 3.0),
-                new Provider('B', 2.0, 4.0, 6.0)
+                new Provider('B', 2.0, 4.0, 6.0),
             ]
             providersMock.findDeliveryPrice('A', 'S') >> 1.0
             providersMock.findDeliveryPrice('B', 'S') >> 2.0

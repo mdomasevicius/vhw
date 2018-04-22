@@ -24,7 +24,7 @@ class App {
             println('File not found')
         } catch (InvalidPathException ignored) {
             println('Invalid file path')
-        } catch(Exception e) {
+        } catch (Exception e) {
             println(e)
         }
     }

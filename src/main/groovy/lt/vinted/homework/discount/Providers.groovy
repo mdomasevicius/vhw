@@ -44,7 +44,7 @@ class Providers {
 
     BigDecimal findDeliveryPrice(String name, String size) {
         def provider = ofNullable(providers.find { it.name == name })
-            .orElseThrow({ new NotFoundException("Provider with name: $name - not found") })
+            .orElseThrow { new NotFoundException("Provider with name: $name - not found") }
         return provider.deliveryPrice(size)
     }
 
