@@ -3,6 +3,7 @@ plugins {
     id 'java'
     id 'groovy'
     id 'application'
+    id 'codenarc'
     id 'com.github.johnrengelman.shadow' version '2.0.3'
 }
 
@@ -50,6 +51,9 @@ task copyBin {
 
 copyBin.mustRunAfter shadowJar
 
+codenarc {
+    config = resources.text.fromFile("${project.projectDir}/gradle/codenarc/codenarc.groovy")
+}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.7'
