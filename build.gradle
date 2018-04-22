@@ -45,7 +45,7 @@ shadowJar {
 task copyBin {
     copy {
         from "build/libs/${distName}.jar"
-        into '/'
+        into "${project.projectDir}/"
     }
 }
 

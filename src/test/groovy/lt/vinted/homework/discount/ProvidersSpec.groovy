@@ -19,7 +19,6 @@ class ProvidersSpec extends Specification {
             thrown NotFoundException
     }
 
-    // Since data is hardcoded let's test it
     @Unroll
     def 'provider #name delivers #size orders for #price'() {
         expect:
