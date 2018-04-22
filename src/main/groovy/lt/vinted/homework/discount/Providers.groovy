@@ -4,28 +4,42 @@ import groovy.transform.CompileStatic
 import groovy.transform.PackageScope
 import lt.vinted.homework.common.NotFoundException
 
+import static java.nio.file.Files.lines
+import static java.nio.file.Paths.get
 import static java.util.Objects.requireNonNull
-import static java.util.Optional.*
+import static java.util.Optional.ofNullable
 
 @CompileStatic
 @PackageScope
 class Providers {
-
-    private final List<Provider> providers
+    private final static String PROVIDER_RESOURCE_NAME = 'providers.csv'
+    private final List<Provider> providers = []
 
     Providers() {
-        this.providers = [
-            new Provider(
-                'LP',
-                BigDecimal.valueOf(1.50d),
-                BigDecimal.valueOf(4.90d),
-                BigDecimal.valueOf(6.90d)),
-            new Provider(
-                'MR',
-                BigDecimal.valueOf(2),
-                BigDecimal.valueOf(3),
-                BigDecimal.valueOf(4)),
-        ]
+       try {
+           def url = this.class
+               .getResource("/$PROVIDER_RESOURCE_NAME")
+               .toURI()
+
+           lines(get(url)).each { String line ->
+               try {
+                   providers << constructProvider(line)
+               } catch (Exception ignored) {
+                   println("Could not parse provider from: $line")
+               }
+           }
+       } catch (Exception ignored) {
+           println("Could not load: '$PROVIDER_RESOURCE_NAME'")
+       }
+    }
+
+    private static Provider constructProvider(String line) {
+        def split = line.split(',')
+        return new Provider(
+            split[0],
+            new BigDecimal(split[1]),
+            new BigDecimal(split[2]),
+            new BigDecimal(split[3]))
     }
 
     BigDecimal findDeliveryPrice(String name, String size) {
