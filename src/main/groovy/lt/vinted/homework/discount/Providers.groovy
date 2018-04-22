@@ -1,0 +1,81 @@
+package lt.vinted.homework.discount
+
+import groovy.transform.CompileStatic
+import groovy.transform.PackageScope
+import lt.vinted.homework.common.NotFoundException
+
+import static java.util.Objects.requireNonNull
+import static java.util.Optional.*
+
+@CompileStatic
+@PackageScope
+class Providers {
+
+    private final List<Provider> providers
+
+    Providers() {
+        this.providers = [
+            new Provider(
+                'LP',
+                BigDecimal.valueOf(1.50d),
+                BigDecimal.valueOf(4.90d),
+                BigDecimal.valueOf(6.90d)),
+            new Provider(
+                'MR',
+                BigDecimal.valueOf(2),
+                BigDecimal.valueOf(3),
+                BigDecimal.valueOf(4)),
+        ]
+    }
+
+    BigDecimal findDeliveryPrice(String name, String size) {
+        def provider = ofNullable(providers.find { it.name == name })
+            .orElseThrow({ new NotFoundException("Provider with name: $name - not found") })
+        return provider.deliveryPrice(size)
+    }
+
+    List<Provider> fetchProviders() {
+        return providers
+    }
+
+    // I didn't feel a particular need to have Enums for sizes since they don't really add benefits to extending code
+    // so I've decided to use case sensitive string
+    static class Provider {
+        private final String name
+        private final Map<String, BigDecimal> prices
+
+        // some people find this style weird but argument *list* should read like a *list* when certain argument count
+        // and/or character length is exceeded. On the plus side it also should provide some visual queue
+        Provider(
+            String name,
+            BigDecimal sPrice,
+            BigDecimal mPrice,
+            BigDecimal lPrice
+        ) {
+            requireNonNull(name, 'name can not be null')
+            requireNonNull(sPrice, 'sPrice can not be null')
+            requireNonNull(mPrice, 'mPrice name can not be null')
+            requireNonNull(lPrice, 'lPrice name can not be null')
+            this.name = name
+            prices = [S: sPrice, M: mPrice, L: lPrice]
+        }
+
+        BigDecimal deliveryPrice(String size) {
+            return prices[size]
+        }
+
+        // these are for convenience only to avoid mistyping, some of them are not even used but I felt like covering
+        // basics
+        BigDecimal deliveryPriceS() {
+            return prices.S
+        }
+
+        BigDecimal deliveryPriceM() {
+            return prices.M
+        }
+
+        BigDecimal deliveryPriceL() {
+            return prices.L
+        }
+    }
+}
