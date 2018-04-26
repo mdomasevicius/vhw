@@ -52,7 +52,9 @@ class Discounts {
 
     private BigDecimal calculateAvailableDiscount(LocalDate orderDate, final BigDecimal calculatedDiscount) {
         def yearMonth = new DateKey(orderDate)
-        monthDiscountLimits[yearMonth] = monthDiscountLimits[yearMonth] ?: MONTHLY_DISCOUNT_CAP
+        if (!monthDiscountLimits.containsKey(yearMonth)) {
+            monthDiscountLimits[yearMonth] = MONTHLY_DISCOUNT_CAP
+        }
 
         if (monthDiscountLimits[yearMonth] < calculatedDiscount) {
             def availableDiscount = monthDiscountLimits[yearMonth]
