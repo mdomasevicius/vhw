@@ -11,7 +11,7 @@ and hopefully make code more readable.
 
 For testing - [Spock](http://spockframework.org/).
 
-Project build tool I've chosen [Gradle](https://gradle.org/) - it's self contained so no additional configuration is required.
+For project build tool I've chosen [Gradle](https://gradle.org/) - it's in a self contained wrapper so no additional configuration is required.
 
 This project also uses [CodeNarc](http://codenarc.sourceforge.net/).
 
