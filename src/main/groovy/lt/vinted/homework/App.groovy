@@ -17,24 +17,29 @@ import static java.nio.file.Paths.get
 @CompileStatic
 class App {
 
+    final static String DEFAULT_INPUT = 'input.txt'
+
     static void main(String[] args) {
+        def filePath = args.size() >= 1 ? args[0] : DEFAULT_INPUT
+
         try {
-            processInput()
+            processInput(filePath)
         } catch (NoSuchFileException ignored) {
-            println('File not found')
+            println("File not found - [$filePath]")
         } catch (InvalidPathException ignored) {
-            println('Invalid file path')
+            println("Invalid file path - [$filePath]")
         } catch (Exception e) {
+            println('Unexpected exception occured')
             println(e)
         }
     }
 
-    private static void processInput() {
+    private static void processInput(String filePath) {
         // in my experience this should be a part of DI framework
         def discounts = new Discounts()
 
         // I will pretend that a file input is like a queue, and each line is a raw message
-        lines(get('input.txt')).each { String originalMessage ->
+        lines(get(filePath)).each { String originalMessage ->
             try {
                 def order = deserialize(originalMessage)
                 def discount = discounts.calculateDiscount(order)
