@@ -52,6 +52,10 @@ idea {
         languageLevel = 1.8
         vcs = 'Git'
     }
+
+    module {
+        testSourceDirs += sourceSets.itest.allSource.srcDirs
+    }
 }
 
 def distName = 'discoutns'
@@ -77,12 +81,6 @@ codenarc {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.7'
-}
-
-idea {
-    module {
-        testSourceDirs += sourceSets.itest.allSource.srcDirs
-    }
 }
 
 task itest(type: Test, description: 'Runs the integration tests.') {
