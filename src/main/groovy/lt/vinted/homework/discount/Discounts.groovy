@@ -9,7 +9,6 @@ import static java.math.BigDecimal.TEN
 import static java.math.RoundingMode.HALF_UP
 import static java.util.Objects.requireNonNull
 
-@SuppressWarnings(['VariableName']) // TODO fix this
 @CompileStatic
 class Discounts {
 
@@ -19,6 +18,11 @@ class Discounts {
     private final List<DiscountRule> rules
     private final Providers providers
 
+    // Since I package scoped Providers and DiscountRule implementations
+    // I shall instantiate them here since usually this is handled by
+    // Dependency Injection framework (in JAVA at least) so this comment should
+    // serve as me understanding this IOC flaw that I am leaving here.
+    // It is - intentional
     Discounts() {
         this.providers = new Providers()
         this.rules = [
@@ -27,17 +31,19 @@ class Discounts {
         ]
     }
 
+    @SuppressWarnings(['VariableName']) // Don't agree with this rule inside method scope
     Discount calculateDiscount(Order order) {
         requireNonNull(order, 'order can not be null')
         requireNonNull(order.date, 'order.date can not be null')
         requireNonNull(order.providerName, 'order.providerName can not be null')
         requireNonNull(order.size, 'order.size can not be null')
 
-        final accumulatedDiscount = rules*.apply(order).sum() as BigDecimal
         final deliveryPrice = providers.findDeliveryPrice(order.providerName, order.size)
-        final matchedDiscount = matchDeliveryPriceWhenDiscountExceeded(deliveryPrice, accumulatedDiscount)
 
-        final availableDiscount = calculateAvailableDiscount(order.date, matchedDiscount)
+        final calculatedDiscount = rules*.apply(order).sum()
+            .with { matchDeliveryPriceWhenDiscountExceeded(deliveryPrice, it as BigDecimal) }
+
+        final availableDiscount = calculateAvailableDiscount(order.date, calculatedDiscount)
 
         return new Discount(
             (deliveryPrice - availableDiscount).setScale(2, HALF_UP),
@@ -62,6 +68,7 @@ class Discounts {
         return totalDiscount > deliveryPrice ? deliveryPrice : totalDiscount
     }
 
+    // composite key for convenience
     @EqualsAndHashCode
     private static class DateKey {
         final int year

@@ -15,6 +15,8 @@ class Providers {
 
     // ideally I would pull data from a data-source
     // i will emulate this using `providers.csv` for simplicity
+    // also this approach breaks IOC however silver-lining here
+    // is that you can edit `providers/providers.csv` source file :)
     Providers() {
         try {
             def stream = this.class.classLoader
