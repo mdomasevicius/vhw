@@ -10,8 +10,29 @@ plugins {
 group 'lt.vinted.homework'
 version '1.0-snapshot'
 
-sourceSets.main.java.srcDirs = []
-sourceSets.main.groovy.srcDirs = ['src/main/java', 'src/main/groovy']
+sourceSets {
+    main {
+        java.srcDirs = []
+        groovy.srcDirs = ['src/main/groovy']
+    }
+    test {
+        java.srcDirs = []
+        groovy.srcDirs = ['src/test/groovy']
+    }
+
+    itest {
+        java.srcDirs = []
+        groovy.srcDirs = ['src/itest/groovy']
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+    }
+}
+
+configurations {
+    itestCompile.extendsFrom testCompile, localCompile
+    itestRuntime.extendsFrom testRuntime
+}
+
 
 sourceCompatibility = 1.8
 
@@ -57,4 +78,17 @@ codenarc {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.7'
+}
+
+idea {
+    module {
+        testSourceDirs += sourceSets.itest.allSource.srcDirs
+    }
+}
+
+task itest(type: Test, description: 'Runs the integration tests.') {
+    testClassesDirs = sourceSets.itest.output.classesDirs
+    classpath = sourceSets.itest.runtimeClasspath
+    jvmArgs = ["-Duser.language=en -Duser.country=US"]
+    mustRunAfter test
 }

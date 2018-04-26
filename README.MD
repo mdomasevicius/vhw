@@ -21,7 +21,9 @@ This project also uses [CodeNarc](http://codenarc.sourceforge.net/).
 
 ## Instructions
 
-Run `./gradlew build` - this will build a distributable and run tests.
+`$ ./gradlew build` - this will build a distributable and run tests.
+`$ ./gradlew build itest` - this will build a distributable and run test + integration tests.
+
 After distributable has been assembled it will be copied to root project directory - `discounts.jar`.
 
 Simply run `java -jar discounts.jar <file_path>` (if you omit `<file_path>` the app will try to find `input.txt` in current directory).
