@@ -4,8 +4,6 @@ import groovy.transform.CompileStatic
 import groovy.transform.PackageScope
 import lt.vinted.homework.common.NotFoundException
 
-import static java.nio.file.Files.lines
-import static java.nio.file.Paths.get
 import static java.util.Objects.requireNonNull
 import static java.util.Optional.ofNullable
 
@@ -18,21 +16,20 @@ class Providers {
     // ideally I would pull data from a data-source
     // i will emulate this using `providers.csv` for simplicity
     Providers() {
-       try {
-           def url = this.class
-               .getResource("/$PROVIDER_RESOURCE_NAME")
-               .toURI()
+        try {
+            def stream = this.class.classLoader
+                .getResourceAsStream("providers/$PROVIDER_RESOURCE_NAME")
 
-           lines(get(url)).each { String line ->
-               try {
-                   providers << constructProvider(line)
-               } catch (Exception ignored) {
-                   println("Could not parse provider from: $line")
-               }
-           }
-       } catch (Exception ignored) {
-           println("Could not load: '$PROVIDER_RESOURCE_NAME'")
-       }
+            new BufferedInputStream(stream).readLines().each { String line ->
+                try {
+                    providers << constructProvider(line)
+                } catch (Exception ignored) {
+                    println("Could not parse provider from: $line")
+                }
+            }
+        } catch (Exception ignored) {
+            println("Could not load: '$PROVIDER_RESOURCE_NAME'")
+        }
     }
 
     private static Provider constructProvider(String line) {
