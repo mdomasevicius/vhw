@@ -35,10 +35,10 @@ class Discounts {
     Discount calculateDiscount(Order order) {
         requireNonNull(order, 'order can not be null')
         requireNonNull(order.date, 'order.date can not be null')
-        requireNonNull(order.providerName, 'order.providerName can not be null')
+        requireNonNull(order.provider, 'order.provider can not be null')
         requireNonNull(order.size, 'order.size can not be null')
 
-        final deliveryPrice = providers.findDeliveryPrice(order.providerName, order.size)
+        final deliveryPrice = providers.findDeliveryPrice(order.provider, order.size)
 
         final calculatedDiscount = rules*.apply(order).sum()
             .with { matchDeliveryPriceWhenDiscountExceeded(deliveryPrice, it as BigDecimal) }

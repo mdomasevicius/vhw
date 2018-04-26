@@ -66,7 +66,7 @@ class App {
         return new Order(
             date: LocalDate.parse(split[0]),
             size: split[1],
-            providerName: split[2]
+            provider: split[2]
         )
     }
 

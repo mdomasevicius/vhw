@@ -21,7 +21,7 @@ class EveryThirdLPLargeDiscount implements DiscountRule {
             return NO_DISCOUNT
         }
 
-        if (order.providerName != 'LP') {
+        if (order.provider != 'LP') {
             return NO_DISCOUNT
         }
 
@@ -29,6 +29,6 @@ class EveryThirdLPLargeDiscount implements DiscountRule {
             return NO_DISCOUNT
         }
 
-        return providers.findDeliveryPrice(order.providerName, order.size)
+        return providers.findDeliveryPrice(order.provider, order.size)
     }
 }

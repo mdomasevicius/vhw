@@ -48,7 +48,7 @@ class EveryThirdLPLargeDiscountSpec extends Specification {
     private static Order newOrder(String providerName, String size) {
         new Order(
             date: LocalDate.now(),
-            providerName: providerName,
+            provider: providerName,
             size: size)
     }
 

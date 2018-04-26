@@ -26,7 +26,7 @@ class MatchLowestSmallShipmentPrice implements DiscountRule {
             return ZERO
         }
 
-        def currentPrice = providers.findDeliveryPrice(order.providerName, order.size)
+        def currentPrice = providers.findDeliveryPrice(order.provider, order.size)
         def cheapestPrice = providers.fetchProviders().min(CHEAPEST_S_DELIVERY_PRICE).deliveryPriceS()
         return currentPrice - cheapestPrice
     }

@@ -52,6 +52,6 @@ class MatchLowestSmallShipmentPriceSpec extends Specification {
         return new Order(
             date: LocalDate.now(),
             size: size,
-            providerName: providerName)
+            provider: providerName)
     }
 }

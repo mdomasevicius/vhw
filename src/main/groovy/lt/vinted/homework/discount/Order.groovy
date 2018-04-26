@@ -9,11 +9,11 @@ class Order {
 
     LocalDate date
     String size
-    String providerName
+    String provider
 
     @Override
     String toString() {
         // .toString() looks weird but java runtime wants strictly String and not GString returned
-        return "$date $size $providerName".toString()
+        return "$date $size $provider".toString()
     }
 }
