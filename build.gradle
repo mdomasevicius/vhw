@@ -66,14 +66,13 @@ shadowJar {
     mainClassName = 'lt.vinted.homework.App'
 }
 
-task copyBin {
-    copy {
-        from "build/libs/${distName}.jar"
-        into "${project.projectDir}/"
-    }
+task copyBin(type: Copy) {
+    from "build/libs/${distName}.jar"
+    into "${project.projectDir}/"
 }
 
 copyBin.mustRunAfter shadowJar
+build.dependsOn copyBin
 
 codenarc {
     config = resources.text.fromFile("${project.projectDir}/gradle/codenarc/codenarc.groovy")
