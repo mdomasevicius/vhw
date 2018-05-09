@@ -58,7 +58,7 @@ idea {
     }
 }
 
-def distName = 'discoutns'
+def distName = 'discounts'
 shadowJar {
     baseName = distName
     classifier = null
